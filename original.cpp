@@ -1,8 +1,9 @@
 #include <iostream>
-#include<fstream>
+#include <fstream>
 #include <sstream>
-#include<string.h>
-#include<math.h>
+#include <string.h>
+#include <math.h>
+#include "splmerge.h"
 
 using namespace std;
 
@@ -24,6 +25,8 @@ using namespace std;
 
 	string addString[1000000];
 
+	string keyWord[100];
+
 	int newL;
 
 
@@ -32,6 +35,10 @@ using namespace std;
 	string array[1000000],unique[1000000];
 
 	double tf[1000000];
+
+	double tf1[1000000];
+
+	double tf2[1000000];
 
     double idf[1000000];
 
@@ -141,7 +148,9 @@ using namespace std;
 	}
 
 
-	void stringToArray(string &str){
+	void stringToArray(string &str)
+	{
+
 		string str1;
 		m=0;
 
@@ -155,7 +164,8 @@ using namespace std;
 	}
 
 
-	void printArray(){
+	void printArray()
+	{
 
 	 printf ("words in an array: \n\n");
 
@@ -175,22 +185,35 @@ void printFreq()
 	for(int i=0; i<m; i++)
 	{
 		int wordCount=0;
+
 		bool flag = false;
+
 		//cout << newString[i] << endl;
+
 		for(int k=0; k<n; k++)
+
 			if(newString[i] == unique[k])
+
 				flag = true;
+
 		if(flag == false)
 		{
 			for(int j=0; j<m; j++)
+
 				if(newString[i] == newString[j])
+
 					wordCount++;
+
 			unique[n] = newString[i];
+
 			n++;
+
 			tf[n-1] = (wordCount*1.0)/(m*1.0);
-			//cout << newString[i] << " freq is " << tf[n-1] << endl;
+
+			//cout << newString[i] << " tf is " << tf[n-1] << endl;
 		}
 	}
+//	cout << n << endl;
 }
 
 
@@ -198,9 +221,13 @@ void printFreq()
 void readFile(char *str1,int i)
 {
 	string st;
+
 	ifstream iFile;
+
 	iFile.open(str1);
+
 	int j=0;
+
 	int k = 0;
 
 	while(iFile>>st){
@@ -228,42 +255,21 @@ void readFile(char *str1,int i)
 		str=str+" ";
 	}
 	length = myStrLen(str);
+
 	cleanup(str);
+
 	stringToArray(str);
 
-/*	for(i=0; i<m; i++)
-	    cout << array[i] << endl;*/
-//	cout << str << endl;
+	/*for(i=0; i<m; i++)
+	    cout << array[i] << endl;
+	cout << str << endl;*/
 
 	removeStopword(i,m);
 
-	    //printFreq();
+	    printFreq();
 }
 
-void countidf()
-{
 
-    int nCount =0;
-    for(int i,j=0;i<2*m,j<m;i++,j++)
-    {
-        if (addString[i] == newString1[j])
-        nCount++;
-
-        if (addString[i]==newString2[j])
-         nCount++;
-
-        else
-
-        nCount =0;
-    idf[i] = log10(2/nCount);
-    }
-
-    //idf[i] = log10(2/nCount);
-
-for(int i =0;i<2*m; i++)
-    cout << idf[i] << endl;
-
-}
 
 int main ()
 {
@@ -291,77 +297,126 @@ int main ()
 
     int firstArrCount = 0;
 
-	for(int i=0;i<m;i++)
+	int arcnt=0;
+
+	for(int i=0;i<n;i++)
     {
-        newString1[i] = newString[i];
+        newString1[i] = unique[i];
 
-        firstArrCount++;
-	}
-	cout << firstArrCount;
+        tf1[i] = tf [i];
 
-	cout << m;
-
-	for(int i=0;i<m;i++)
-    {
-       //cout <<   newString1[i] << endl;
+		//cout <<   newString1[i] <<" tf is " << tf1[i] << endl;
+        arcnt++;
 
 	}
+	//cout << m << " " << n << endl;
+	//cout << arcnt<< endl;
+	cout << endl << endl;
 
 
     readFile("myfile2.txt",i);
 
-    for(int i=0;i<m;i++)
+    int arc=0;
+
+    for(int i=0;i<n;i++)
     {
-        newString2[i] = newString[i];
+        newString2[i] = unique[i];
+
+
+        tf2[i] = tf [i];
+
+		//cout <<   newString2[i] <<" tf is " << tf2[i] << endl;
+
+       arc++;
 	}
+	//cout << arc << endl;
 
-	for(int i=0;i<m;i++)
-    {
-     //cout <<   newString2[i] << endl;
-
-	}
-
-    for(int i=0;i<m;i++)
+	for(int i=0;i<arcnt;i++)
     {
         addString[i] = newString1[i];
+
+		//cout <<   newString1[i] << endl;
+
 	}
 
-    for(int i=m,j=0;i<(2*m),j<m;i++,j++)
+	int addcount = 0;
+
+	for(int i=arcnt,j=0;i<arcnt,j<arc;j++)
     {
-       addString[i] = newString2[j];
+    	int is_present = 0;
+
+    	for(int k=0; k<arcnt; k++)
+
+    		if(newString2[j] == newString1[k])
+
+    			is_present = 1;
+
+        if(is_present == 0)
+        {
+        	addString[i] = newString2[j];
+
+			i++;
+        }
+        addcount = i;
+		//cout <<   newString1[i] << endl;
+
 	}
 
-    for(int i=0;i<2*m;i++){
-       //cout <<   addString[i] << endl;
+	double idf[addcount];
+
+	for(int i=0;i<(addcount);i++)
+    {
+        //addString[i] = newString1[i];
+
+		double txtcount=0.0;
+
+		for(int j=0; j<arcnt; j++)
+
+			if(addString[i] == newString1[j])
+
+				txtcount += 1.0;
+
+		for(int j=0; j<arc; j++)
+
+			if(addString[i] == newString2[j])
+
+				txtcount += 1.0;
+
+		idf[i] = log(2.0/txtcount)/log(10.0);
+
+		cout << "Idf of " << addString[i] << " is " << idf[i] << endl;
 
 	}
 
+	cout << endl << endl;
 
-	//.re
+	double tfidf[addcount];
 
-	/*str="\0";
+	for(int i=0; i<addcount; i++)
+	{
+		double tftot = 0.0;
 
-	for(int a=0;a<m;a++){
+		for(int j=0; j<arcnt; j++)
 
-		str=str+newString[a];
+			if(addString[i] == newString1[j])
 
-		str=str+" ";
+				tftot += tf1[j];
+
+		for(int j=0; j<arc; j++)
+
+			if(addString[i] == newString2[j])
+
+				tftot += tf2[j];
+
+		tfidf[i] = tftot*idf[i];
+
+		cout << "Tf-Idf of " << addString[i] << " is " << tfidf[i] << endl;
 	}
 
-	cout<<str<<endl;*/
+	splmerge(tfidf,addcount,addString);
+/*
 
-	/*length = myStrLen(str);
-
-    removeMultiSpaces(str);
-
-    cout << str << endl;*/
-    //stringToArray(str);
-	//cout << array[m-1] << endl;
-    //printArray();
-    //cout << "Frequency of the words" << endl;
-
-    //countidf();
-    int n = 0;
+   int n = 0;
 
     ifstream nFile;
 
@@ -395,13 +450,8 @@ int main ()
 
 
 	pFile.close();
+*/
 
 
-   /* for(int i=0;i<5000;i++)
-
-    {
-    cout << strArrNeg[i] << endl;
-    }
-    */
   return 0;
 }
