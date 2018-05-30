@@ -2,7 +2,7 @@
 
 using namespace std;
 
-void merge(double a[],int startElement, int endElement, int middleEliment,string addString[])
+void merge(double *a,int startElement, int endElement, int middleEliment,string addString[])
 {
     int i, j, k;
     double temp[endElement-startElement+1];
@@ -63,7 +63,7 @@ void merge(double a[],int startElement, int endElement, int middleEliment,string
         }
 }
 
-void mergeSort(double a[], int startElement,int  endElement,string addString[])
+void mergeSort(double *a, int startElement,int  endElement,string addString[])
 {
     int middleEliment;
 
@@ -80,7 +80,7 @@ void mergeSort(double a[], int startElement,int  endElement,string addString[])
         }
 }
 
-int splmerge(double array[],int arrayElement,string addString[])
+int splmerge(double *array,int arrayElement,string addString[])
 {
 
 	cout << endl << endl;
@@ -89,11 +89,13 @@ int splmerge(double array[],int arrayElement,string addString[])
 
         for(int i=0;i <arrayElement; i++)
 
-            cout << "The most important words" << addString[i] << " tfidf " << array[i] << endl;
+            cout << "The most important words " << addString[i] << " tfidf " << array[i] << endl;
+
+            cout << endl<< endl;
+
 
 
 
 
     return 0;
 }
-
