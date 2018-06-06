@@ -1,0 +1,80 @@
+class NestedForLoop {
+    public static void main(String[] args) {
+
+        for (int i = 1; i <= 5; ++i) {
+
+            System.out.println("Outer loop iteration " + i);
+
+            for (int j = 1; j <=2; ++j) {
+                System.out.println("i = " + i + "; j = " + j);
+            }
+        }
+    }
+}
+
+// Program to create a simple calculator
+// Performs addition, subtraction, multiplication or division depending the input from user
+
+# include <stdio.h>
+
+int main() {
+
+    char operator;
+    double firstNumber,secondNumber;
+
+    printf("Enter an operator (+, -, *, /): ");
+    scanf("%c", &operator);
+
+    printf("Enter two operands: ");
+    scanf("%lf %lf",&firstNumber, &secondNumber);
+
+    switch(operator)
+    {
+        case '+':
+            printf("%.1lf + %.1lf = %.1lf",firstNumber, secondNumber, firstNumber+secondNumber);
+            break;
+
+        case '-':
+            printf("%.1lf - %.1lf = %.1lf",firstNumber, secondNumber, firstNumber-secondNumber);
+            break;
+
+        case '*':
+            printf("%.1lf * %.1lf = %.1lf",firstNumber, secondNumber, firstNumber*secondNumber);
+            break;
+
+        case '/':
+            printf("%.1lf / %.1lf = %.1lf",firstNumber, secondNumber, firstNumber/firstNumber);
+            break;
+
+        // operator is doesn't match any case constant (+, -, *, /)
+        default:
+            printf("Error! operator is not correct");
+    }
+
+    return 0;
+}
+
+#include <stdio.h>
+
+int main () {
+
+   /* local variable definition */
+   int a = 100;
+   int b = 200;
+
+   switch(a) {
+
+      case 100:
+         printf("This is part of outer switch\n", a );
+
+         switch(b) {
+            case 200:
+               printf("This is part of inner switch\n", a );
+         }
+   }
+
+   printf("Exact value of a is : %d\n", a );
+   printf("Exact value of b is : %d\n", b );
+
+   return 0;
+}
